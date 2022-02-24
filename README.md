@@ -1,2 +1,2 @@
-# grist-timeseries-widget
-A Grist Timeseries Line Chart Widget
+# Grist Timeseries Widget
+A [Grist](https://getgrist.com) Timeseries Line Chart Widget.
