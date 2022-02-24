@@ -10,25 +10,57 @@
   <body>
     <div id="chart"></div>
     <script>
-      grist.ready();
-      grist.onRecords(drawChart);
+      // grist.ready();
+      // grist.onRecords(drawChart);
+
+      {
+        drawChart([
+          {id: "420870",	date: "2022-02-21T08:27:11.645+00:00", val:	1.8035456115},
+          {id: "420871",	date: "2022-02-21T08:26:11.645+00:00", val:	-1.7753136318},
+          {id: "420872",	date: "2022-02-21T08:25:11.645+00:00", val:	0.430041749},
+          {id: "420873",	date: "2022-02-21T08:24:11.645+00:00", val:	1.4893308676},
+          {id: "420874",	date: "2022-02-21T08:23:11.645+00:00", val:	-0.0793277006},
+          {id: "420875",	date: "2022-02-21T08:22:11.645+00:00", val:	1.6683664668},
+          {id: "420876",	date: "2022-02-21T08:21:11.645+00:00", val:	-1.7131914551},
+          {id: "420877",	date: "2022-02-21T08:20:11.645+00:00", val:	0.2707084705},
+          {id: "420878",	date: "2022-02-21T08:19:11.645+00:00", val:	0.7204901095},
+          {id: "420879",	date: "2022-02-21T08:18:11.645+00:00", val:	34.7652356896},
+          {id: "420880",	date: "2022-02-21T08:17:11.645+00:00", val:	13.3489659457},
+          {id: "420881",	date: "2022-02-21T08:16:11.645+00:00", val:	-15.4224236476},
+          {id: "420882",	date: "2022-02-21T08:15:11.645+00:00", val:	-0.1020460247},
+          {id: "420883",	date: "2022-02-21T08:14:11.645+00:00", val:	6.0218860551},
+          {id: "420884",	date: "2022-02-21T08:13:11.645+00:00", val:	0.9640469992},
+          {id: "420885",	date: "2022-02-21T08:12:11.645+00:00", val:	0.4406722383},
+        ])
+      }
+
+      function getUrlParams() {
+        const params = {};
+        const queryString = window.location.search;
+        const paramString = queryString.split('?')[1];
+        return new URLSearchParams(paramString);
+      }
 
       function drawChart(records) {
+        const urlParams = getUrlParams();
+        const xProp = urlParams.get('x') || 'date';
+        const yProp = urlParams.get('y') || 'value';
+        const color = urlParams.get('color') || '#16b378';
         const rows = (records || [
-          { recorded_at: new Date("2021-01-01").toISOString(), Value: 0 },
-          { recorded_at: new Date("2022-01-01").toISOString(), Value: 0 },
-        ]).sort((a, b) => a.recorded_at - b.recorded_at);
+          { [xProp]: new Date("2021-01-01").toISOString(), [yProp]: 0 },
+          { [xProp]: new Date("2022-01-01").toISOString(), [yProp]: 0 },
+        ]).sort((a, b) => a[xProp] - b[xProp]);
 
         const options = {
           x: {
             type: "time",
-            domain: [rows[0].recorded_at, rows[rows.length - 1].recorded_at]
+            domain: [rows[0][xProp], rows[rows.length - 1][xProp]]
           },
           y: {
             grid: true
           },
           marks: [
-            Plot.line(rows, { x: "recorded_at", y: "value", stroke: "#16b378" })
+            Plot.line(rows, { x: xProp, y: yProp, stroke: color })
           ],
           grid: true,
           marginLeft: 66,
